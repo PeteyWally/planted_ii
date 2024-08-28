@@ -1,16 +1,13 @@
 # planted_ii
+*rewrote planted_i using MVVM structure with GPT + Copilot*
 
-A new Flutter project.
+## BACK
+- MongoDB setup
+## MID
+- REST API setup
+## FRONT
+- Setup various phone emulators
+- Test regarding industry standard fonts vs creative elements
+- Widget cleanup
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+:Phase I complete:
