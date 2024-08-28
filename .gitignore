@@ -9,6 +9,8 @@
 .history
 .svn/
 migrate_working_dir/
+# Read Me
+**/README.md
 
 # IntelliJ related
 *.iml
@@ -16,10 +18,20 @@ migrate_working_dir/
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# Visual Studio Code related
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+# Local history for Visual Studio Code
+.history/
+
+# Common credential files
+**/credentials.json
+**/client_secrets.json
+**/client_secret.json
 
 # Flutter/Dart/Pub related
 **/doc/api/
