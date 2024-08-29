@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:planted_ii/data/repo_bonsai.dart';
 import 'package:planted_ii/data/repo_in_mem/mem_category.dart';
 import 'package:planted_ii/data/repo_in_mem/mem_task.dart';
 import 'package:planted_ii/views/loading.dart';
-import 'package:provider/provider.dart';
 
 import 'view_models/categoryviewmodel.dart';
 import 'view_models/calendarviewmodel.dart';
@@ -94,18 +94,19 @@ class _PlantedAppState extends State<PlantedApp> {
                 Provider<TaskRepository>.value(value: _taskRepository),
                 Provider<CategoryRepository>.value(value: _categoryRepository),
                 ChangeNotifierProvider(
-                  create: (_) =>
-                      CategoryViewModel(_categoryRepository, _taskRepository),
+                  create: (_) => CategoryViewModel(
+                    categoryRepository: _categoryRepository,
+                    taskRepository: _taskRepository,
+                  ),
                 ),
                 ChangeNotifierProvider(
-                  create: (_) => TaskViewModel(_taskRepository),
+                  create: (_) => TaskViewModel(
+                    taskRepository: _taskRepository,
+                    categoryRepository: _categoryRepository,
+                  ),
                 ),
-                ChangeNotifierProvider(
-                  create: (_) => CalendarViewModel(),
-                ),
-                ChangeNotifierProvider(
-                  create: (_) => HomeViewModel(),
-                ),
+                ChangeNotifierProvider(create: (_) => CalendarViewModel()),
+                ChangeNotifierProvider(create: (_) => HomeViewModel()),
               ],
               child: MaterialApp(
                 title: 'Custom Blocks App',

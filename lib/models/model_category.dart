@@ -1,6 +1,5 @@
 /*  lib  models  CATEGORY < CATEGORY+GRID  */
 
-
 import '../models/model_task.dart';
 import 'package:flutter/material.dart';
 import '../data/interfaces/repo_tasks.dart';
@@ -18,17 +17,15 @@ class CategoryModel {
     required this.id,
     required this.name,
     Widget? icon,
-    required this.iconColor,
-    this.sizeTime = 120, /* default 2 hours */
+    this.iconColor = 'grey',
+    this.sizeTime = 120,
+    /* default 2 hours */
     required this.subTaskIds,
     required TaskRepository taskRepository,
-  })
-  : icon = icon ?? const Icon(Icons.add),
-  _taskRepository = taskRepository;
-    
+  })  : icon = icon ?? const Icon(Icons.add),
+        _taskRepository = taskRepository;
 
-
- // Convenience method to get tasks based on task IDs and a repository
+  // Convenience method to get tasks based on task IDs and a repository
   Future<List<TaskModel>> _getSubTasks() async {
     // Use Future.wait to fetch tasks concurrently
     return Future.wait(subTaskIds.map((taskId) async {
@@ -55,8 +52,8 @@ class CategoryModel {
 
   // Calculated remaining time
   Future<double> get remainingTime async {
-    final calcTimeValue = await calcTime; // Await the future to get the double value
+    final calcTimeValue =
+        await calcTime; // Await the future to get the double value
     return sizeTime.toDouble() - calcTimeValue;
   }
 }
-

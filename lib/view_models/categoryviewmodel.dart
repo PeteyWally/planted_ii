@@ -11,11 +11,14 @@ import '../models/model_category.dart';
 class CategoryViewModel extends ChangeNotifier {
   final CategoryRepository _categoryRepository;
   final TaskRepository _taskRepository;
-
   List<CategoryModel> _categories = [];
   bool _isLoading = true;
 
-  CategoryViewModel(this._categoryRepository, this._taskRepository) {
+  CategoryViewModel(
+      {required CategoryRepository categoryRepository,
+      required TaskRepository taskRepository})
+      : _categoryRepository = categoryRepository,
+        _taskRepository = taskRepository {
     _loadCategories();
   }
 
@@ -36,54 +39,57 @@ class CategoryViewModel extends ChangeNotifier {
   }
 
 //PUBLIC method getter sub-tasks from IDs
-    Future<List<TaskModel>> fetchSubTasks(List<String> subTaskIds) async {
-        try {
-          // Fetch tasks concurrently
-          final tasks = await Future.wait(subTaskIds.map((id) async {
-            final task = await _taskRepository.getTaskById(id);
-            if (task == null) {
-              throw Exception('Task with ID $id not found');
-            }
-            return task;
-          }));
-          return tasks;
-        } catch (e) {
-          print('Error fetching sub-tasks: $e');
-          return []; // Return an empty list on error
+  Future<List<TaskModel>> fetchSubTasks(List<String> subTaskIds) async {
+    try {
+      // Fetch tasks concurrently
+      final tasks = await Future.wait(subTaskIds.map((id) async {
+        final task = await _taskRepository.getTaskById(id);
+        if (task == null) {
+          throw Exception('Task with ID $id not found');
         }
-      }
-      
-      Future<List<CategoryModel>> getBlocksForGrid() async {
-        final blocks = <CategoryModel>[];
+        return task;
+      }));
+      return tasks;
+    } catch (e) {
+      print('Error fetching sub-tasks: $e');
+      return []; // Return an empty list on error
+    }
+  }
 
-        if (_categories.isEmpty) {
-          print('No categories avail');
-          return blocks;
-        }
+  Future<List<CategoryModel>> getBlocksForGrid() async {
+    final blocks = <CategoryModel>[];
 
-        for (var category in _categories) {
-          final subTasks = await fetchSubTasks(category.subTaskIds);
-          for (var task in subTasks) {
-            blocks.add(CategoryModel(
-              id: _generateUniqueId(),
-              name: task.name,
-              sizeTime: _calculateBlockSize(task),
-              iconColor: 'UserBlue', // Placeholder for icon color
-              subTaskIds: [], // No sub-tasks for the blocks
-              taskRepository: _taskRepository,
-          ));
-        }
-      }
-      
-      return blocks; // Return the processed list of blocks
+    if (_categories.isEmpty) {
+      print('No categories avail');
+      return blocks;
     }
 
-   String _generateUniqueId() {
+    for (var category in _categories) {
+      final subTasks = await fetchSubTasks(category.subTaskIds);
+      for (var task in subTasks) {
+        blocks.add(CategoryModel(
+          id: _generateUniqueId(),
+          name: task.name,
+          sizeTime: _calculateBlockSize(task),
+          iconColor: 'UserBlue', // Placeholder for icon color
+          subTaskIds: [], // No sub-tasks for the blocks
+          taskRepository: _taskRepository,
+        ));
+      }
+    }
+
+    return blocks; // Return the processed list of blocks
+  }
+
+  String _generateUniqueId() {
     return const Uuid().v4();
   }
 
   int _calculateBlockSize(TaskModel task) {
-    final duration = (task.endTime?.difference(task.startTime ?? DateTime.now()).inMinutes) ?? 0;
+    final duration = (task.endTime
+            ?.difference(task.startTime ?? DateTime.now())
+            .inMinutes) ??
+        0;
     return (duration);
   }
 
@@ -105,4 +111,3 @@ class CategoryViewModel extends ChangeNotifier {
     }
   }
 }
-

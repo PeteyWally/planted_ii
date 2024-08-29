@@ -1,19 +1,31 @@
 /*  lib  viewmodels  TASK  */
 
 import 'package:flutter/material.dart';
+import 'package:planted_ii/data/repo_in_mem/mem_category.dart';
+import 'package:planted_ii/data/repo_in_mem/mem_task.dart';
 import '../models/model_task.dart';
+import '../models/model_category.dart';
 import '../data/interfaces/repo_tasks.dart';
+import '../data/interfaces/repo_category.dart';
 
 class TaskViewModel extends ChangeNotifier {
   final TaskRepository _taskRepository;
+  final CategoryRepository _categoryRepository;
   List<TaskModel> _tasks = [];
+  List<CategoryModel> _categories = [];
   bool _isLoading = true;
 
-  TaskViewModel(this._taskRepository) {
+  TaskViewModel({
+    required TaskRepository taskRepository,
+    required CategoryRepository categoryRepository,
+  })  : _taskRepository = taskRepository,
+        _categoryRepository = categoryRepository {
     _loadTasks();
+    _loadCategories();
   }
 
   List<TaskModel> get tasks => _tasks;
+  List<CategoryModel> get categories => _categories;
   bool get isLoading => _isLoading;
 
   Future<void> _loadTasks() async {
@@ -23,6 +35,19 @@ class TaskViewModel extends ChangeNotifier {
       _tasks = await _taskRepository.getTasks();
     } catch (e) {
       print('Error loading tasks: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> _loadCategories() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      _categories = await _categoryRepository.getCategories();
+    } catch (e) {
+      print('Error loading categories: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -47,12 +72,37 @@ class TaskViewModel extends ChangeNotifier {
     }
   }
 
+  void toggleTask(TaskModel task) {
+    task.isCompleted = !task.isCompleted;
+    updateTask(task);
+  }
+
   Future<void> deleteTask(String id) async {
     try {
       await _taskRepository.deleteTask(id);
       _loadTasks(); // Refresh the task list
     } catch (e) {
       print('Error deleting task: $e');
+    }
+  }
+
+  Future<Icon?> getCategoryIconForTask(TaskModel task) async {
+    try {
+      final categories = await _categoryRepository.getCategories();
+      final category = categories.firstWhere(
+        (category) => category.subTaskIds.contains(task.id),
+        orElse: () => CategoryModel(
+          id: '',
+          name: 'dull+noid',
+          icon: null,
+          subTaskIds: [],
+          taskRepository: _taskRepository,
+        ),
+      );
+      return category.icon as Icon?;
+    } catch (e) {
+      print('Error fetching category icon: $e');
+      return null;
     }
   }
 }
