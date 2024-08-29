@@ -41,7 +41,7 @@ class InMemoryCategoryRepository implements CategoryRepository {
       'car': CategoryModel(
         id: '6',
         name: 'Car',
-        icon: const Icon(Icons.carpenter_sharp),
+        icon: const Icon(Icons.car_repair),
         iconColor: 'UserBlueLight',
         sizeTime: 150,
         subTaskIds: [
@@ -55,13 +55,11 @@ class InMemoryCategoryRepository implements CategoryRepository {
       'morning': CategoryModel(
         id: '7',
         name: 'Morning',
-        icon: const Icon(Icons.carpenter_sharp),
+        icon: const Icon(Icons.sunny),
         iconColor: 'UserBlueLight',
         sizeTime: 150,
         subTaskIds: [
           'm1',
-          'f1',
-          'f1',
           'f1',
         ],
         taskRepository: _taskRepository,

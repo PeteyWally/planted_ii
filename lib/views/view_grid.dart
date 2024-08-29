@@ -90,10 +90,10 @@ class GridScreen extends StatelessWidget {
             // );
 
             return Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(0.0),
               child: Wrap(
-                spacing: 8.0,
-                runSpacing: 8.0,
+                spacing: 0.0,
+                runSpacing: 0.0,
                 children: categories.map((category) {
                   // final width = categoryViewModel.calculateWidth(block);
                   final width = category.sizeTime.toDouble();

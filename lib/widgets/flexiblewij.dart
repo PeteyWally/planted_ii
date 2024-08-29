@@ -19,7 +19,10 @@ class FlexibleWij extends StatelessWidget {
   Widget build(BuildContext context) {
     final categoryViewModel = Provider.of<CategoryViewModel>(context);
     return Container(
-      color: Colors.blueGrey[100],
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.blueGrey[100],
+      ),
       width: widgetWidth,
       padding: const EdgeInsets.all(2.0),
       child: Row(
@@ -37,7 +40,8 @@ class FlexibleWij extends StatelessWidget {
                       IconButton(
                         icon: Icon(Icons.add),
                         onPressed: () {
-                          categoryViewModel.increaseSizeTime(category, 60);
+                          categoryViewModel.increaseCategorySizeTime(
+                              category.id, 60);
                           Navigator.of(context).pop();
                         },
                       ),
@@ -45,7 +49,8 @@ class FlexibleWij extends StatelessWidget {
                       IconButton(
                         icon: Icon(Icons.remove),
                         onPressed: () {
-                          categoryViewModel.increaseSizeTime(category, -60);
+                          categoryViewModel.decreaseCategorySizeTime(
+                              category.id, -60);
                           Navigator.of(context).pop();
                         },
                       ),

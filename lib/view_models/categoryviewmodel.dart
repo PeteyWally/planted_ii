@@ -22,6 +22,8 @@ class CategoryViewModel extends ChangeNotifier {
     _loadCategories();
   }
 
+//========================================================================
+
   List<CategoryModel> get categories => _categories;
   bool get isLoading => _isLoading;
 
@@ -56,7 +58,6 @@ class CategoryViewModel extends ChangeNotifier {
     }
   }
 
-//TODO: change this to display categories not subtasks
   Future<List<CategoryModel>> getBlocksForGrid() async {
     final blocks = <CategoryModel>[];
 
@@ -65,32 +66,47 @@ class CategoryViewModel extends ChangeNotifier {
       return blocks;
     }
     for (var category in _categories) {
-      final subTasks = await fetchSubTasks(category.subTaskIds);
-      for (var task in subTasks) {
-        blocks.add(CategoryModel(
-          id: _generateUniqueId(),
-          name: task.name,
-          sizeTime: _calculateBlockSize(task),
-          iconColor: 'UserBlue', // Placeholder for icon color
-          subTaskIds: [], // No sub-tasks for the blocks
-          taskRepository: _taskRepository,
-        ));
-      }
+      // final subTasks = await fetchSubTasks(category.subTaskIds);
+      // for (var task in subTasks) {
+      blocks.add(CategoryModel(
+        id: _generateUniqueId(),
+        name: category.name,
+        sizeTime: category.sizeTime,
+        icon: category.icon,
+        iconColor: category.iconColor, // Placeholder for icon color
+        subTaskIds: [], // No sub-tasks for the blocks
+        taskRepository: _taskRepository,
+      ));
+      // }
     }
 
     return blocks; // Return the processed list of blocks
   }
 
-  void increaseSizeTime(CategoryModel category, int increment) {
-    category.increaseSizeTime(increment);
-    notifyListeners();
+//grid view buttons to adjust sizeTime
+  void increaseCategorySizeTime(String categoryId, int increment) {
+    try {
+      final category = _categories.firstWhere((c) => c.id == categoryId);
+      category.increaseSizeTime(increment);
+      notifyListeners();
+    } catch (e) {
+      print('Error: $e');
+      // Handle the error, e.g., show a message to the user
+    }
   }
 
-  void decreaseSizeTime(CategoryModel category, int decrement) {
-    category.decreaseSizeTime(decrement);
-    notifyListeners();
+  void decreaseCategorySizeTime(String categoryId, int decrement) {
+    try {
+      final category = _categories.firstWhere((c) => c.id == categoryId);
+      category.decreaseSizeTime(decrement);
+      notifyListeners();
+    } catch (e) {
+      print('Error: $e');
+      // Handle the error, e.g., show a message to the user
+    }
   }
 
+//========================================================================
   String _generateUniqueId() {
     return const Uuid().v4();
   }
@@ -116,12 +132,21 @@ class CategoryViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> updateCategory(CategoryModel category) async {
-    try {
-      await _categoryRepository.updateCategory(category);
-      await _loadCategories(); // Refresh categories
-    } catch (e) {
-      print('Error updating category: $e');
+/* version 1 */
+  // Future<void> updateCategory(CategoryModel category) async {
+  //   try {
+  //     await _categoryRepository.updateCategory(category);
+  //     await _loadCategories(); // Refresh categories
+  //   } catch (e) {
+  //     print('Error updating category: $e');
+  //   }
+  // }
+/* version 2 */
+  void updateCategory(CategoryModel category) {
+    final index = _categories.indexWhere((c) => c.id == category.id);
+    if (index != -1) {
+      _categories[index] = category;
+      notifyListeners();
     }
   }
 }
