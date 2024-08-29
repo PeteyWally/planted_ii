@@ -1,8 +1,6 @@
 /*  lib  viewmodels  TASK  */
 
 import 'package:flutter/material.dart';
-import 'package:planted_ii/data/repo_in_mem/mem_category.dart';
-import 'package:planted_ii/data/repo_in_mem/mem_task.dart';
 import '../models/model_task.dart';
 import '../models/model_category.dart';
 import '../data/interfaces/repo_tasks.dart';

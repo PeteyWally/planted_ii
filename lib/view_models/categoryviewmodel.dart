@@ -56,6 +56,7 @@ class CategoryViewModel extends ChangeNotifier {
     }
   }
 
+//TODO: change this to display categories not subtasks
   Future<List<CategoryModel>> getBlocksForGrid() async {
     final blocks = <CategoryModel>[];
 
@@ -63,7 +64,6 @@ class CategoryViewModel extends ChangeNotifier {
       print('No categories avail');
       return blocks;
     }
-
     for (var category in _categories) {
       final subTasks = await fetchSubTasks(category.subTaskIds);
       for (var task in subTasks) {
@@ -91,6 +91,10 @@ class CategoryViewModel extends ChangeNotifier {
             .inMinutes) ??
         0;
     return (duration);
+  }
+
+  double calculateWidth(CategoryModel category) {
+    return category.sizeTime.toDouble();
   }
 
   Future<void> addCategory(CategoryModel category) async {
