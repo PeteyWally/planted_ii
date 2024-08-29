@@ -1,27 +1,27 @@
 /*  lib  widgets  FLEXIBLE GRID WIJ  */
 
 import 'package:flutter/material.dart';
+import 'package:planted_ii/view_models/categoryviewmodel.dart';
+import 'package:provider/provider.dart';
 import '/style/text_style.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import '../models/model_category.dart';
 
 class FlexibleWij extends StatelessWidget {
   final CategoryModel category;
-  final double width;
+  final double widgetWidth;
 
-  const FlexibleWij({
-    super.key,
-    required this.category,
-    required this.width,
-  });
+  const FlexibleWij(
+      {super.key, required this.category, required this.widgetWidth});
 
 //option with dialog
   @override
   Widget build(BuildContext context) {
+    final categoryViewModel = Provider.of<CategoryViewModel>(context);
     return Container(
       color: Colors.blueGrey[100],
-      width: width,
-      padding: const EdgeInsets.all(8.0),
+      width: widgetWidth,
+      padding: const EdgeInsets.all(2.0),
       child: Row(
         children: [
           IconButton(
@@ -33,6 +33,22 @@ class FlexibleWij extends StatelessWidget {
                   return AlertDialog(
                     title: Text('Adjust Size Params...'),
                     actions: [
+                      //plus sign icon button to add 60 to sizeTime
+                      IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: () {
+                          categoryViewModel.increaseSizeTime(category, 60);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      //minus sign icon button to subtract 60 from sizeTime
+                      IconButton(
+                        icon: Icon(Icons.remove),
+                        onPressed: () {
+                          categoryViewModel.increaseSizeTime(category, -60);
+                          Navigator.of(context).pop();
+                        },
+                      ),
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
@@ -45,7 +61,7 @@ class FlexibleWij extends StatelessWidget {
               );
             },
           ),
-          if (width > 100) // Adjust this threshold as needed
+          if (widgetWidth > 100) // Adjust this threshold as needed
             Expanded(
               child: Text(
                 category.name,

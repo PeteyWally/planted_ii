@@ -81,6 +81,16 @@ class CategoryViewModel extends ChangeNotifier {
     return blocks; // Return the processed list of blocks
   }
 
+  void increaseSizeTime(CategoryModel category, int increment) {
+    category.increaseSizeTime(increment);
+    notifyListeners();
+  }
+
+  void decreaseSizeTime(CategoryModel category, int decrement) {
+    category.decreaseSizeTime(decrement);
+    notifyListeners();
+  }
+
   String _generateUniqueId() {
     return const Uuid().v4();
   }

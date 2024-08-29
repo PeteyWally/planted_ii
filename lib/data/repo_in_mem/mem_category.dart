@@ -34,10 +34,7 @@ class InMemoryCategoryRepository implements CategoryRepository {
         iconColor: 'UserBlueLight',
         sizeTime: 120,
         subTaskIds: [
-          'g1',
-          'f1',
-          'f1',
-          'f1',
+          'h1',
         ],
         taskRepository: _taskRepository,
       ),

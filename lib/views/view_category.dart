@@ -38,6 +38,7 @@ class CategoryView extends StatelessWidget {
                       final tasks = snapshot.data!;
                       return CategoryCard(
                         title: category.name,
+                        estimatedTime: category.sizeTime.toString(),
                         subtasks: tasks.map((task) => task.name).toList(),
                       );
                     } else {

@@ -99,7 +99,7 @@ class GridScreen extends StatelessWidget {
                   final width = category.sizeTime.toDouble();
                   return FlexibleWij(
                     category: category,
-                    width: width,
+                    widgetWidth: width,
                   );
                 }).toList(),
               ),

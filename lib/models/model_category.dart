@@ -9,7 +9,7 @@ class CategoryModel {
   final String name;
   final Widget icon;
   final String iconColor;
-  final int sizeTime; /* alloted time used in grid */
+  int sizeTime; /* alloted time used in grid */
   final List<String> subTaskIds;
   final TaskRepository _taskRepository;
 
@@ -24,6 +24,14 @@ class CategoryModel {
     required TaskRepository taskRepository,
   })  : icon = icon ?? const Icon(Icons.add),
         _taskRepository = taskRepository;
+
+  void increaseSizeTime(int increment) {
+    sizeTime += increment;
+  }
+
+  void decreaseSizeTime(int decrement) {
+    sizeTime -= decrement;
+  }
 
   // Convenience method to get tasks based on task IDs and a repository
   Future<List<TaskModel>> _getSubTasks() async {
