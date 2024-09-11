@@ -5,41 +5,39 @@ import 'package:provider/provider.dart';
 import '../view_models/calendarviewmodel.dart';
 
 class CalendarView extends StatelessWidget {
-  const CalendarView({super.key});
+  final CalendarViewModel viewModel;
+  const CalendarView({
+    required this.viewModel,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final calendarViewModel = Provider.of<CalendarViewModel>(context);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(":Calendar:"),
-      ),
-
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: calendarViewModel.categories.length,
-              itemBuilder: (context, index) {
-                final category = calendarViewModel.categories[index];
-                return ListTile(
-                  title: Text(category.name),
-                );
-              },
+    return ChangeNotifierProvider.value(
+      value: viewModel,
+      child: Consumer<CalendarViewModel>(
+        builder: (context, viewModel, child) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Calendar'),
             ),
-          ),
-
-        // ElevatedButton(
-        //   onPressed: () {
-        //     calendarViewModel.addWidget('New Widget ${calendarViewModel.widgets.length}', '/newRoute');
-        //   },
-        //   child: Icon(Icons.add),
-        // ),
-
-
-        ],
+            // body: _buildCalendarView(viewModel),
+          );
+        },
       ),
     );
   }
+  //   switch (viewModel.config.view) {
+  //     case CalendarView.year:
+  //       return YearCalendarView(date: viewModel.config.selectedDate);
+  //     case CalendarView.month:
+  //       return MonthCalendarView(date: viewModel.config.selectedDate);
+  //     case CalendarView.week:
+  //       return WeekCalendarView(date: viewModel.config.selectedDate);
+  //     case CalendarView.day:
+  //       return DayCalendarView(date: viewModel.config.selectedDate);
+  //     default:
+  //       return Container(); // Fallback
+  //   }
+  // }
 }
