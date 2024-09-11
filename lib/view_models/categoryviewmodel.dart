@@ -58,6 +58,26 @@ class CategoryViewModel extends ChangeNotifier {
     }
   }
 
+  /* DateTime _currentDate = DateTime.now();
+  
+  DateTime get currentDate => _currentDate;
+
+  // Get the list of days for the grid
+  List<DateTime> get days {
+    return List.generate(7, (index) => _currentDate.add(Duration(days: index)));
+  }
+  
+  // Get the list of hours for the grid
+  List<int> get hours {
+    return List.generate(14, (index) => index + 1); // 1 to 14
+  }
+  
+  // Update current date, only allow scrolling down
+  void scrollDown() {
+    _currentDate = _currentDate.add(Duration(days: 7));
+    notifyListeners();
+  } */
+
   Future<List<CategoryModel>> getBlocksForGrid() async {
     final blocks = <CategoryModel>[];
 

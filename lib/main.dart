@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:planted_ii/data/repo_bonsai.dart';
 import 'package:planted_ii/data/repo_in_mem/mem_category.dart';
 import 'package:planted_ii/data/repo_in_mem/mem_task.dart';
-import 'package:planted_ii/views/loading.dart';
+import 'package:provider/provider.dart';
+import 'data/repo_bonsai.dart';
+// import 'data/mongo_interfaces/repo_category.dart';
+// import 'data/mongo_interfaces/repo_tasks.dart';
+import 'views/loading.dart';
 
 import 'view_models/categoryviewmodel.dart';
 import 'view_models/calendarviewmodel.dart';
@@ -18,8 +20,11 @@ import 'views/view_grid.dart';
 
 import 'data/interfaces/repo_category.dart';
 import 'data/interfaces/repo_tasks.dart';
+// import 'data/mongo_config.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // await MongoConfig.connect();
   runApp(const PlantedApp());
 }
 
@@ -61,6 +66,12 @@ class _PlantedAppState extends State<PlantedApp> {
         missionStatement = 'Failed to fetch mission statement';
       });
     }
+  }
+
+  @override
+  void dispose() {
+    // MongoConfig.close();
+    super.dispose();
   }
 
   @override

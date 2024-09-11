@@ -1,5 +1,7 @@
 /*  lib  models  CATEGORY < CATEGORY+GRID  */
 
+import 'package:planted_ii/data/repo_in_mem/mem_task.dart';
+
 import '../models/model_task.dart';
 import 'package:flutter/material.dart';
 import '../data/interfaces/repo_tasks.dart';
@@ -24,6 +26,31 @@ class CategoryModel {
     required TaskRepository taskRepository,
   })  : icon = icon ?? const Icon(Icons.add),
         _taskRepository = taskRepository;
+
+  //============================================================================
+
+  factory CategoryModel.fromMap(Map<String, dynamic> map) {
+    return CategoryModel(
+      id: map['_id'],
+      name: map['name'],
+      icon: Icon(map['icon']),
+      iconColor: map['iconColor'],
+      sizeTime: map['sizeTime'],
+      subTaskIds: List<String>.from(map['subTaskIds']),
+      taskRepository: InMemoryTaskRepository(),
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      '_id': id,
+      'name': name,
+      'icon': icon.toString(),
+      'iconColor': iconColor,
+      'sizeTime': sizeTime,
+      'subTaskIds': subTaskIds,
+    };
+  }
 
   void increaseSizeTime(int increment) {
     sizeTime += increment;
